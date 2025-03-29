@@ -4,12 +4,12 @@
 animatedStage = false;
 function onCreate()
 	if not lowQuality then --If the player has Low Quality option turned off, it loads an animated version of the stage
-		makeAnimatedLuaSprite('halloweenBG', 'halloween_bg', -200, -100);
+		makeAnimatedLuaSprite('halloweenBG', 'spookyMansion/halloween_bg', -200, -100);
 		addAnimationByPrefix('halloweenBG', 'idle', 'halloweem bg0', 24, true);
 		addAnimationByPrefix('halloweenBG', 'strike', 'halloweem bg lightning strike', 24, false);
 		animatedStage = true;
 	else --If the player has Low Quality option turned on, it loads a static version of the stage
-		makeLuaSprite('halloweenBG', 'halloween_bg_low', -200, -100);
+		makeLuaSprite('halloweenBG', 'spookyMansion/halloween_bg_low', -200, -100);
 	end
 	addLuaSprite('halloweenBG', false);
 

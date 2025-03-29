@@ -2408,6 +2408,7 @@
 		"song": "Spookeez",
 		"validScore": true,
 		"needsVoices": true,
+		"stage": "spooky",
 		"format": "psych_v1_convert",
 		"speed": 2.4,
 		"bpm": 150

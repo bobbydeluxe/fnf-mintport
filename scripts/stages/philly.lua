@@ -30,7 +30,6 @@ function onCreate()
 end
 
 function onCreatePost()
-
 	-- Sets up the sprites for the 'Philly Glow' event if it's present in the chart.
 	for note = 0, getProperty('eventNotes.length') - 1 do
         if getPropertyFromGroup('eventNotes', note, 'event') == 'Philly Glow' then
@@ -97,11 +96,11 @@ end
 
 -- All of this down below is to make the mechanics of the stage work. 
 windowsColors = {
-	0x2663AC,
-	0x329A6D,
-	0x502D64,
-	0x932C28,
-	0xB66F43
+	0x31A2FD,
+	0x31FD8C,
+	0xFB33F5,
+	0xFD4531,
+	0xFBA633
 }
 
 isTrainMoving = false
@@ -217,14 +216,6 @@ function onEvent(eventName, value1, value2, strumTime)
 				setProperty('street.color', 0xFFFFFF)
 				for i, object in ipairs({'boyfriend', 'dad', 'gf'}) do
 					setProperty(object..'.color', 0xFFFFFF)
-					-- Re-enabling the shaders here since we removed them.
-					if shadersEnabled == true then
-						setSpriteShader(object, 'adjustColor')
-						setShaderFloat(object, 'hue', -26)
-						setShaderFloat(object, 'saturation', -16)
-						setShaderFloat(object, 'contrast', 0)
-						setShaderFloat(object, 'brightness', -5)
-					end
 				end
 			end
 		elseif value1 == '1' then -- Activates the event, and/or chooses a random color.
@@ -245,13 +236,6 @@ function onEvent(eventName, value1, value2, strumTime)
 				setProperty('blackenScreen.visible', true)
 				setProperty('windowEvent.visible', true)
 				setProperty('gradient.visible', true)
-
-				if shadersEnabled == true then
-					for i, object in ipairs({'boyfriend', 'dad', 'gf'}) do
-						-- Removing the shader here or else we can't change the character's colors
-						removeSpriteShader(object)
-					end
-				end
 			elseif flashingLights == true then
 				doFlash(windowsEventColors[selectedColor], 0.5, 0.25, true)
 			end

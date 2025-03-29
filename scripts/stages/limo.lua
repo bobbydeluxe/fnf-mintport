@@ -6,7 +6,7 @@ function onCreate()
 
 	if lowQuality == false then
 		makeAnimatedLuaSprite('limoBG', 'limo/bgLimo', -200, 480)
-		addAnimationByPrefix('limoBG', 'anim', 'background limo blue')
+		addAnimationByPrefix('limoBG', 'anim', 'background limo pink')
 		setScrollFactor('limoBG', 0.4, 0.4)
 		addLuaSprite('limoBG')
 
@@ -32,7 +32,6 @@ function onCreate()
 end
 
 function onCreatePost()
-
 	-- Sets up the sprites for the 'Kill Henchmen' event if it's present in the chart.
 	for note = 0, getProperty('eventNotes.length') - 1 do
         if getPropertyFromGroup('eventNotes', note, 'event') == 'Kill Henchmen' then
@@ -71,15 +70,6 @@ function onCreatePost()
 				addLuaSprite('henchmenBlood')
 				setProperty('henchmenBlood.alpha', 0.01)
 
-				if shadersEnabled == true then
-					for i, object in ipairs({'lightPole', 'light', 'henchmenCorpse1', 'henchmenCorpse2'}) do
-						setSpriteShader(object, 'adjustColor')
-						setShaderFloat(object, 'hue', -30)
-						setShaderFloat(object, 'saturation', -20)
-						setShaderFloat(object, 'contrast', 0)
-						setShaderFloat(object, 'brightness', -30)
-					end
-				end
 				precacheSound('dancerdeath')
 			end
 		end
@@ -214,17 +204,6 @@ function updateKillingState(elapsed)
 					setProperty('henchmenCorpse2.visible', true)
 				end
 
-				if shadersEnabled == true then
-					for i = 1, #henchmenParticles do
-						if luaSpriteExists(henchmenParticles[i]) then
-							setSpriteShader(henchmenParticles[i], 'adjustColor')
-							setShaderFloat(henchmenParticles[i], 'hue', -30)
-							setShaderFloat(henchmenParticles[i], 'saturation', -20)
-							setShaderFloat(henchmenParticles[i], 'contrast', 0)
-							setShaderFloat(henchmenParticles[i], 'brightness', -30)
-						end
-					end
-				end
 				setProperty('henchmen'..henchmenNum..'.x', getProperty('henchmen'..henchmenNum..'.x') + screenWidth * 2)
 			end
 		end

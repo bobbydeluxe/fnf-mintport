@@ -1,17 +1,17 @@
 function onCreate()
-	makeLuaSprite('mallWall', 'christmas/bgWalls', -1000, -440)
+	makeLuaSprite('mallWall', 'christmas/bgWalls', -1000, -500)
 	scaleObject('mallWall', 0.9, 0.9)
 	setScrollFactor('mallWall', 0.2, 0.2)
 	addLuaSprite('mallWall')
 
 	if lowQuality == false then
-		makeAnimatedLuaSprite('topBoppers', 'christmas/upperBop', -240, -40)
+		makeAnimatedLuaSprite('topBoppers', 'christmas/upperBop', -240, -90)
 		addAnimationByPrefix('topBoppers', 'idle', 'Upper Crowd Bob', 24, false)
 		scaleObject('topBoppers', 0.85, 0.85)
 		setScrollFactor('topBoppers', 0.33, 0.33)
 		addLuaSprite('topBoppers')
 
-		makeLuaSprite('escalators', 'christmas/bgEscalator', -1100, -540)
+		makeLuaSprite('escalators', 'christmas/bgEscalator', -1100, -600)
 		scaleObject('escalators', 0.9, 0.9)
 		setScrollFactor('escalators', 0.3, 0.3)
 		addLuaSprite('escalators')
@@ -28,12 +28,13 @@ function onCreate()
 		addLuaSprite('fog')
 	end
 
-	makeAnimatedLuaSprite('bottomBoppers', 'christmas/bottomBop', -410, 100)
+	makeAnimatedLuaSprite('bottomBoppers', 'christmas/bottomBop', -300, 140)
 	addAnimationByPrefix('bottomBoppers', 'idle', 'Bottom Level Boppers Idle', 24, false)
+	addAnimationByPrefix('bottomBoppers', 'hey', 'Bottom Level Boppers HEY', 24, false)
 	setScrollFactor('bottomBoppers', 0.9, 0.9)
 	addLuaSprite('bottomBoppers')
 
-	makeLuaSprite('snowGround', 'christmas/fgSnow', -600, 680)
+	makeLuaSprite('snowGround', 'christmas/fgSnow', -600, 700)
 	addLuaSprite('snowGround')
 
 	makeAnimatedLuaSprite('santa', 'christmas/santa', -840, 150)
@@ -41,33 +42,14 @@ function onCreate()
 	addLuaSprite('santa')
 end
 
-function onCreatePost()
-	if shadersEnabled == true then
-        initLuaShader('adjustColor')
-        for i, object in ipairs({'boyfriend', 'dad', 'gf', 'santa'}) do
-            setSpriteShader(object, 'adjustColor')
-            setShaderFloat(object, 'hue', 5)
-            setShaderFloat(object, 'saturation', 20)
-            setShaderFloat(object, 'contrast', 0)
-            setShaderFloat(object, 'brightness', 0)
-        end
-	end
-end
-
---[[
-	Just makes the characters bop, pretty straight forward.
-	I do want to add the 'Hey' animations for them at one point, 	
-	since Psych Engine does it aswell, but I'm no animator.
-	
-	If you read this and want to help out,
-	please post a comment on the mod's Gamebanana page.
-	Thank you -- Ledonic :)
-]]
+local heyTimer = 0
 function onCountdownTick(swagCounter)
 	if lowQuality == false then
 		playAnim('topBoppers', 'idle', true)
 	end
-	playAnim('bottomBoppers', 'idle', true)
+	if heyTimer <= 0 then
+		playAnim('bottomBoppers', 'idle', true)
+	end
 	playAnim('santa', 'idle', true)
 end
 
@@ -75,6 +57,37 @@ function onBeatHit()
 	if lowQuality == false then
 		playAnim('topBoppers', 'idle', true)
 	end
-	playAnim('bottomBoppers', 'idle', true)
+	if heyTimer <= 0 then
+		playAnim('bottomBoppers', 'idle', true)
+	end
 	playAnim('santa', 'idle', true)
+end
+
+function onEvent(name, value1, value2)
+	if name == 'Hey!' then
+		value1 = tonumber(value1)
+		if value1 == nil then
+			value1 = 0
+		end
+
+		value2 = tonumber(value2)
+		if value2 == nil then
+			value2 = 0.6
+		end
+
+		if value1 ~= 0 then
+			playAnim('bottomBoppers', 'hey', true)
+			heyTimer = value2
+		end
+	end
+end
+
+function onUpdate(elapsed)
+	if heyTimer > 0 then
+		heyTimer = heyTimer - elapsed
+		if heyTimer <= 0 then
+			playAnim('bottomBoppers', 'idle', true)
+			heyTimer = 0
+		end
+	end
 end
